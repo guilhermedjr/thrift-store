@@ -1,8 +1,10 @@
 (ns thrift-store.core
   (:require [ring.adapter.jetty :as ring-jetty]
             [reitit.ring :as ring]
+            [ring.middleware.reload :refer [wrap-reload]]
             [muuntaja.core :as m]
-            [reitit.ring.middleware.muuntaja :as muuntaja])
+            [reitit.ring.middleware.muuntaja :as muuntaja]
+            [clojure.tools.logging :as log])
   (:gen-class))
 
 (def products (atom {}))
@@ -13,8 +15,10 @@
 
 (defn create-product [{product :body-params}]
   (let [id (str (java.util.UUID/randomUUID))
-        products (->> (assoc product :id id)
-                      (swap! products assoc id))]
+        products (try (->> (assoc product :id id)
+                           (swap! products assoc id))
+                      (catch Exception e
+                        (do (log/error e) (products))))]
     {:status 200
      :body products}))
 
@@ -26,21 +30,26 @@
   {:status 200
    :body (get @products id)})
 
+(def routes 
+  [["products/:id" get-product-by-id]
+   ["products" {:get get-products
+                :post create-product}]
+   ["" string-handler]])
+
 (def app
   (ring/ring-handler
    (ring/router
-    ["/" 
-     ["products/:id" get-product-by-id]
-     ["products" {:get get-products
-                  :post create-product}]
-     ["" string-handler]] 
+    ["/"
+    routes]
     {:data {:muuntaja m/instance
             :middleware [muuntaja/format-middleware]}})))
 
-(defn start []
-  (ring-jetty/run-jetty app {:port  3000
+(defn -dev-main 
+  [& args]
+  (ring-jetty/run-jetty (wrap-reload #'app) {:port 3000 
                              :join? false}))
 
 (defn -main
   [& args]
-  (start))
+  (ring-jetty/run-jetty app {:port 3000
+                             :join? false}))
