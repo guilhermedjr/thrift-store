@@ -15,4 +15,6 @@
   :profiles {:uberjar {:aot :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}
              :dev {:main thrift-store.core/-dev-main 
-                   :dependencies [[org.clojure/tools.logging "1.2.4"]] }})
+                   :dependencies [[org.clojure/tools.logging "1.2.4"]]
+                   :resource-paths ["resources/dev"]}
+             :prod {:resource-paths ["resources/prod"]}})
