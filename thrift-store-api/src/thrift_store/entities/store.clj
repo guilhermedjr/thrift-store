@@ -5,10 +5,11 @@
 (s/defrecord
  Store [name :- s/Str
         description :- s/Str
-        marketplaces :- '#{Marketplace}])
+        ;;marketplaces :- '#{Marketplace}
+         ])
 
-(s/defrecord MarketplaceStore [marketplace :- Marketplace
-                               store :- Store])
+;;(s/defrecord MarketplaceStore [marketplace :- Marketplace
+                               ;;store :- Store])
 
 ;;(s/defn bind-store-product-to-marketplace
   ;;([product marketplaceStore] (new-product-store product marketplaceStore))

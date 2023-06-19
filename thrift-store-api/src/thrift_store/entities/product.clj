@@ -10,13 +10,13 @@
           price :- Double
           stock :- s/Int])
 
-(s/defrecord
- ProductStore [product :- Product
-               store :- Store
-               name :- s/Str
-               description :- s/Str
-               price :- Double
-               stock :- s/Int])
+;;(s/defrecord
+ ;;ProductStore [product :- Product
+               ;;store :- Store
+               ;;name :- s/Str
+               ;;description :- s/Str
+               ;;price :- Double
+               ;;stock :- s/Int])
 
 ;; todo: unit tests
 ;;(with-test "Stock update"
@@ -25,11 +25,11 @@
     ;;([p :- Product qty :- s/Int] (update p :stock - qty)))
   ;;(testing "by simple increment"
     ;;(is (= 9 (dec-stock ))))
-  ;;(testing "by specified increment"))
+  ;;(testing "by specified increment"))(
 
-(s/defn dec-stock 
-  ([p :- Product] (update p :stock dec))
-  ([p :- Product qty :- s/Int] (update p :stock - qty)))
+(with-test (s/defn dec-stock
+             ([p :- Product] (update p :stock dec))
+             ([p :- Product qty :- s/Int] (update p :stock - qty))))
 
 (s/defn inc-stock 
   ([p :- Product] (update p :stock inc)) 

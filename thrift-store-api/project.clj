@@ -9,6 +9,9 @@
                  [prismatic/schema "1.4.1"]]
   :main thrift-store.core
   :target-path "target/%s"
+  :test-paths ["test" "src/thrift_store/entities"]
+  :test-selectors {:default (complement :integration)
+                   :integration :integration}
   :profiles {:uberjar {:aot :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}
              :dev {:main thrift-store.core/-dev-main 

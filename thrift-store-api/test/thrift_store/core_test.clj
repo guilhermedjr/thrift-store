@@ -1,4 +1,4 @@
-(ns thrift-store.core-test
+(ns ^:integration thrift-store.core-test
   (:require [clojure.test :refer :all]
             [thrift-store.core :refer :all]))
 
