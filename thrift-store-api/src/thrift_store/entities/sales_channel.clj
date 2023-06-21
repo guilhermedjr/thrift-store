@@ -4,9 +4,9 @@
             [thrift-store.entities.store :as st]
             [thrift-store.entities.marketplace :as m]))
 
-(s/def ::store #(instance? ::st/Store %))
-(s/def ::marketplace #(instance? ::m/Marketplace %))
-(s/def ::description string?)
+(s/def ::store #(s/map-of ::st/Store %))
+(s/def ::marketplace #(s/map-of ::m/Marketplace %))
+(s/def ::description (s/nilable string?))
 
 (s/def ::SalesChannel
   (s/keys

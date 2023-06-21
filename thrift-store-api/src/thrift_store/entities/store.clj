@@ -5,10 +5,10 @@
 
 (s/def ::id uuid?)
 (s/def ::name string?)
-(s/def ::description string?)
+(s/def ::description (s/nilable string?))
 
-(s/def ::product #(instance? ::p/Product %))
-(s/def ::products (s/coll-of ::product))
+(s/def ::product #(s/map-of ::p/Product %))
+(s/def ::products (s/nilable (s/coll-of ::product)))
 
 (s/def ::Store
   (s/keys

@@ -4,7 +4,7 @@
 
 (s/def ::id uuid?)
 (s/def ::name string?)
-(s/def ::description string?)
+(s/def ::description (s/nilable string?))
 (s/def ::price double?)
 (s/def ::stock integer?)
 

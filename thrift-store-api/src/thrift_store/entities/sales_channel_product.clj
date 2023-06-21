@@ -4,11 +4,11 @@
             [thrift-store.entities.sales-channel :as sc]
             [thrift-store.entities.product :as p]))
 
-(s/def ::channel #(instance? ::sc/SalesChannel %))
-(s/def ::product #(instance? ::p/Product %))
-(s/def ::name string?)
-(s/def ::description string?)
-(s/def ::price number?)
+(s/def ::channel #(s/map-of ::sc/SalesChannel %))
+(s/def ::product #(s/map-of ::p/Product %))
+(s/def ::name (s/nilable string?))
+(s/def ::description (s/nilable string?))
+(s/def ::price (s/nilable number?))
 
 (s/def ::SalesChannelProduct
   (s/keys
