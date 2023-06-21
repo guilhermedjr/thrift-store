@@ -5,8 +5,7 @@
                  [javax.servlet/servlet-api "2.5"]
                  [ring "1.9.0"]
                  [metosin/reitit "0.5.12"]
-                 [metosin/muuntaja "0.6.8"]
-                 [prismatic/schema "1.4.1"]]
+                 [metosin/muuntaja "0.6.8"]]
   :main thrift-store.core
   :target-path "target/%s"
   :test-paths ["test" "src/thrift_store/entities"]

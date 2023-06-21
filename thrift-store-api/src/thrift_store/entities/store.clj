@@ -1,16 +1,36 @@
 (ns thrift-store.entities.store
-  (:require [schema.core :as s]
-            [thrift-store.entities.marketplace :refer :all]))
+  (:require [clojure.spec.alpha :as s]
+            [clojure.test :refer :all]
+            [thrift-store.entities.product :as p]))
 
-(s/defrecord
- Store [name :- s/Str
-        description :- s/Str
-        ;;marketplaces :- '#{Marketplace}
-         ])
+(s/def ::id uuid?)
+(s/def ::name string?)
+(s/def ::description string?)
 
-;;(s/defrecord MarketplaceStore [marketplace :- Marketplace
-                               ;;store :- Store])
+(s/def ::product #(instance? ::p/Product %))
+(s/def ::products (s/coll-of ::product))
 
-;;(s/defn bind-store-product-to-marketplace
-  ;;([product marketplaceStore] (new-product-store product marketplaceStore))
-  ;;([product marketplaceStore name description price stock] ()))
+(s/def ::Store
+  (s/keys
+   :req [::id ::name]
+   :opt [::description ::products]))
+
+(defn generate-test-store [name description products] 
+  (let [store {::id (java.util.UUID/randomUUID)
+               ::name name
+               ::description description
+               ::products products}]
+    (if (s/valid? ::Store store)
+      store
+      (throw (ex-info "Test store does not conform to the specification" {:store store})))))
+
+(def test-store (generate-test-store "High Tech" nil nil))
+
+(with-test
+  (defn change-description
+    [c d]
+    (assoc c ::description d))
+  (testing "Testing 'change-description' for Store"
+    (let [store test-store]
+      (is (= "Loja de eletrônicos"
+             (::description (change-description store "Loja de eletrônicos")))))))
