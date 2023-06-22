@@ -1,17 +1,18 @@
 (ns thrift-store.entities.marketplace
   (:require [clojure.spec.alpha :as s]))
 
-(s/def ::id uuid?)
-(s/def ::name string?)
+(s/def :marketplace/id uuid?)
+(s/def :marketplace/name string?)
 
-(s/def ::Marketplace
+(s/def ::marketplace
   (s/keys
-   :req [::id ::name]))
+   :req [:marketplace/id 
+         :marketplace/name]))
 
 (defn generate-test-marketplace [name]
-  (let [marketplace {::id (java.util.UUID/randomUUID)
-                     ::name name}]
-    (if (s/valid? ::Marketplace marketplace)
+  (let [marketplace {:marketplace/id (java.util.UUID/randomUUID)
+                     :marketplace/name name}]
+    (if (s/valid? ::marketplace marketplace)
       marketplace
       (throw (ex-info "Test marketplace does not conform to the specification" {:marketplace marketplace})))))
 
